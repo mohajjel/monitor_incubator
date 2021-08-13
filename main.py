@@ -236,9 +236,18 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path == "/shutdown_board":
             subprocess.call(['shutdown','now'])
         elif self.path == "/update_firmware":
-            r = subprocess.call(['git','pull'])
-            print("r= ",r)
-            #os.execv(sys.argv[0], sys.argv)
+            str=""
+            cmd = subprocess.Popen(['git', 'pull'], stdout=subprocess.PIPE)
+            cmd_out, cmd_err = cmd.communicate()
+            print("out->",cmd_out)
+            print("error->",cmd_err)
+            
+            #r = subprocess.call(['git','pull'],stdout=str.)
+            if cmd_out == b"Already up to date.\n":
+                print("->Already up to date.")
+            else:
+                print(cmd_out)
+                #os.execv(sys.argv[0], sys.argv)
             
         
         print(self.path)
@@ -263,7 +272,7 @@ def thread_monitor(num):
     function to print cube of given num
     """
     print("Cube: {}".format(num * num * num))
-    monitor()
+    #monitor()
 
 
 def thread_server(num):
