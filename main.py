@@ -12,6 +12,8 @@ from constants import CONFIG_FILE_NAME
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import subprocess
+import os
+import sys
 
 hostName = "0.0.0.0"  # "localhost"
 serverPort = 8889
@@ -234,7 +236,10 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path == "/shutdown_board":
             subprocess.call(['shutdown','now'])
         elif self.path == "/update_firmware":
-            subprocess.call(['git','pull'])
+            r = subprocess.call(['git','pull'])
+            print("r= ",r)
+            #os.execv(sys.argv[0], sys.argv)
+            
         
         print(self.path)
 
