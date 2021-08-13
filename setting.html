@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)http://ssspark.ir/smartee/setting.html -->
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<meta name="viewport" content="width=device-width,intial-scale=1.0">
+
+	<style>
+		* {
+			box-sizing: border-box
+		}
+
+		body {
+			background-color: rgb(15, 15, 15);
+			font-family: arial, sans-serif;
+			margin: 0 !important
+		}
+
+		.max-width {
+			max-width: 500px;
+			display: block;
+			min-width: 335px;
+			margin: 10px auto;
+			min-height: 100px
+		}
+
+		.submax-width {
+			font-family: Arial, Helvetica, sans-serif;
+			color: #fff;
+			padding: 10px
+		}
+
+		.box {
+			min-width: 310px;
+			width: 90%;
+			display: block;
+			border-radius: 10px;
+			padding: 10px;
+			margin: auto;
+			background-color: #292a2d;
+			margin-top: 5px;
+			width: 70%;
+			min-width: 300px;
+			border: 1px groove #424141 !important
+		}
+
+		.title {
+			width: 100%;
+			text-align: center;
+			margin-bottom: 10px;
+			margin-top: 5px;
+			font-size: 1.1rem;
+			margin-bottom: 15px
+		}
+
+		.btn {
+			background: linear-gradient(to bottom, #98e6fc, rgb(8 152 193));
+			padding: 5px 7px;
+			border-radius: 10px;
+			color: #fff;
+			font-weight: 500;
+			text-align: center;
+			font-size: 1.1rem;
+			line-height: 25px;
+			transition: all 1s;
+			cursor: pointer;
+			display: block;
+			margin: 0 auto 10px;
+			width: 60%;
+			float: left;
+		}
+
+		.btnreset {
+			float: right;
+			width: 160px;
+			background: linear-gradient(to bottom, #f82d1e, rgb(121 13 5));
+		}
+
+		.btn:hover {
+			background: linear-gradient(to bottom, #82b8d7, rgb(2 142 181))
+		}
+
+		.btnreset:hover {
+			background: linear-gradient(to bottom, #c51407, rgb(76 8 3));
+		}
+
+		.subbox {
+			display: inline-block;
+			width: 100%;
+			position: relative;
+			border: 1px solid #4f4f51;
+			border-radius: 5px;
+			margin-bottom: 10px;
+			padding: 0 5px
+		}
+
+		.time1 {
+			text-align: center;
+			line-height: 40px;
+			font-size: 1.2rem;
+			width: 100%;
+			margin: auto;
+			border-radius: 5px
+		}
+
+		.column {
+			float: left;
+			width: 25%;
+			line-height: 2rem
+		}
+
+		.container {
+			position: relative;
+			padding-left: 29px;
+			margin-bottom: 12px;
+			cursor: pointer;
+			font-size: 1.1rem;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			transition: all 1s
+		}
+
+		.container input {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+			height: 0;
+			width: 0
+		}
+
+		.checkmark {
+			position: absolute;
+			top: 1px;
+			left: 0;
+			height: 20px;
+			width: 20px;
+			background-color: rgba(0, 180, 230, .86);
+			border-radius: 5px;
+			transition: all 1s
+		}
+
+		.container:hover input~.checkmark {
+			background-color: #efeeee;
+			transition: all 1s
+		}
+
+		.container:hover {
+			color: #05a1cc
+		}
+
+		.checkmark:after {
+			content: "";
+			position: absolute;
+			display: none
+		}
+
+		.container input:checked~.checkmark:after {
+			display: block
+		}
+
+		.container .checkmark:after {
+			left: 6px;
+			top: -1px;
+			width: 5px;
+			height: 14px;
+			border: solid #293953;
+			border-width: 0 3px 3px 0;
+			-webkit-transform: rotate(45deg);
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+			transition: all 2s
+		}
+
+		.endBox {
+			width: 100%;
+			margin-top: 20px
+		}
+
+		.endBox:last-child {
+			margin-bottom: 50px
+		}
+
+		input[type=text],
+		input[type=password] {
+			width: 100%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			display: inline-block;
+			border: 1px solid #ccc;
+			box-sizing: border-box
+		}
+
+		.button {
+			background-color: #000;
+			padding: 14px 20px;
+			margin: 8px 0;
+			border: none;
+			cursor: pointer;
+			width: 100%;
+			opacity: .8
+		}
+
+		.button:hover {
+			opacity: 1
+		}
+
+		.cancelbtn {
+			width: auto;
+			padding: 10px 18px;
+			background-color: #f44336
+		}
+
+		.imgcontainer {
+			text-align: center;
+			margin: 24px 0 12px 0
+		}
+
+		img.avatar {
+			width: 40%;
+			border-radius: 50%
+		}
+
+		span.psw {
+			float: right;
+			padding-top: 16px
+		}
+
+		@media screen and (max-width:300px) {
+			span.psw {
+				display: block;
+				float: none
+			}
+
+			.cancelbtn {
+				width: 100%
+			}
+		}
+
+		.sbutton {
+			padding: 0 !important;
+			width: 50px;
+			height: 50px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 10px;
+			margin: 4px 4px;
+			cursor: pointer;
+			overflow: hidden
+		}
+
+		.on {
+			color: #fff;
+			text-shadow: 0 0 15px rgb(230, 0, 120);
+			border: 3px solid rgb(0, 180, 230);
+			box-shadow: 0 0 25px -1px rgb(0, 180, 230), 0 0 15px -1px rgb(0, 180, 230) inset
+		}
+
+		.off {
+			border: 2px solid rgb(0, 180, 230);
+			color: #fff
+		}
+
+		.form1 {
+			display: inline-block
+		}
+
+		.divsocket {
+			margin-top: 20px;
+			color: #fff;
+			border-color: #e6e4e4 !important;
+			border-radius: 10px;
+			text-align: center;
+			border: solid;
+			width: 24%;
+			display: inline-block;
+			background-color: #292a2d;
+			padding-bottom: 10px;
+			border: 1px groove #aba9a9 !important
+		}
+
+		.scontainer {
+			text-align: center
+		}
+
+		.button5 {
+			border-radius: 100%;
+			transition: all 1s
+		}
+
+		.button5:hover {
+			transform: scale(1.2)
+		}
+
+		.firstBox {
+			margin-top: 22px;
+			width: 55%;
+			min-width: 300px
+		}
+
+		.firstBox .time1 {
+			width: 250px;
+			display: block
+		}
+
+		.endBox .time1 {
+			display: inline-block;
+			margin-bottom: 2px;
+			padding-bottom: 0
+		}
+
+		select {
+			background-color: #424245;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			height: 30px;
+			font-size: 1.2rem;
+			width: 45px;
+			text-align: center;
+			-moz-appearance: none;
+			-webkit-appearance: none;
+			appearance: none;
+			position: relative;
+			padding: 3px 5px;
+			transition: all 1s;
+			border: 2px solid rgb(14, 35, 42)
+		}
+
+		.selectContainer {
+			position: relative;
+			display: inline-block
+		}
+
+		.selectContainer:after {
+			content: " >";
+			color: #c7c5c5;
+			font-size: 1rem;
+			font-family: arial;
+			position: absolute;
+			top: -4px;
+			height: 100%;
+			-webkit-transform: rotate(90deg) scaley(1.5);
+			-moz-transform: rotate(90deg) scaley(1.5);
+			-ms-transform: rotate(90deg) scaley(1.5);
+			pointer-events: none;
+			width: 1px;
+			right: 11px
+		}
+
+		select::-webkit-scrollbar {
+			width: 8px
+		}
+
+		select::-webkit-scrollbar-track {
+			background: #b9b9b9;
+			width: 8px
+		}
+
+		select::-webkit-scrollbar-thumb {
+			background: rgba(15, 15, 15, .8);
+			width: 8px
+		}
+
+		select::-webkit-scrollbar-thumb:hover {
+			background: #555;
+			width: 8px
+		}
+
+		.dot {
+			display: inline-block;
+			margin: 0 5px
+		}
+
+		.status2.onStatus {
+			text-shadow: 0 0 10px #f9c020;
+			color: #f9c020;
+			display: inline-block;
+			transition: all 1s
+		}
+
+		.status2.offStatus {
+			color: gray;
+			text-shadow: 0 0 10px rgb(0 180 230)
+		}
+
+		.onStatus:hover {
+			transform: scale(1.2)
+		}
+
+		.selectContainer:hover select {
+			border: 1px solid #fff;
+			transition: all 1s
+		}
+
+
+
+		.text-left {
+			text-align: left
+		}
+
+		.col1 {
+			width: 50%;
+			min-width: 190px;
+			float: left;
+		}
+
+		.col2 {
+			min-width: 195px;
+			text-align: left;
+			float: left;
+			padding-left: 4%;
+			line-height: 53px;
+		}
+
+		.mainSubbox .col2 {
+			min-width: 210px;
+		}
+
+		.col3 {
+			width: 9%;
+			float: left;
+			margin-top: -9px
+		}
+
+		@media(max-width:495px) {
+			.btn {
+				width: 100%;
+			}
+
+			.col1 {
+				width: 100%;
+				padding-left: 0 !important;
+			}
+
+			.col2 {
+				padding-left: 0 !important
+			}
+
+			.firstBox .time1 {
+				transform: translateX(7%)
+			}
+
+			.subContainer {
+				padding: 0 !important;
+			}
+
+			label {
+				margin-left: 5px;
+			}
+		}
+
+		.endBox .title {
+			margin-bottom: 20px;
+			margin-bottom: 20px;
+			margin-top: 20px
+		}
+
+		.endBox .time1:nth-child(2n+1) {
+			border-bottom: 0 solid #414141 !important;
+			padding-bottom: 0;
+			margin-bottom: 0
+		}
+
+		.submitContainer {
+			display: inline-block;
+			margin-top: 10px;
+			width: 100%;
+			padding: 0 15px;
+		}
+
+		.dis-none {
+			display: none
+		}
+
+		.col2 .container:nth-child(2n) {
+			top: -12px
+		}
+
+		.subbox:nth-child(2n) {
+			background-color: rgba(8, 152, 193, .1)
+		}
+
+		.subbox:nth-child(2n) input {
+			border: 2px solid rgba(0, 180, 230, .23)
+		}
+
+		.sendtext {
+			color: #fff;
+			max-width: 300px;
+			line-height: 29px;
+			overflow: auto;
+		}
+
+		.scontainer .title {
+			margin-top: 20px;
+			font-weight: 600;
+			margin-bottom: 35px;
+		}
+
+
+		@media(max-width:375px) {
+			.col3 {
+				margin-left: 15px;
+			}
+		}
+
+		.mainSubbox {
+			display: inline-block;
+			width: 100%;
+			position: relative;
+			margin-bottom: 25px;
+			padding: 0 5px 10px;
+			border-bottom: 1px solid #4f4f51;
+		}
+
+		input {
+			background-color: #424245;
+			border: 2px solid rgb(14, 35, 42) !important;
+			color: white;
+			border-radius: 5px;
+		}
+
+		.subContainer {
+			padding: 0 25px;
+		}
+
+		.mainSubbox .col1 {
+			padding-left: 10px;
+		}
+
+		input:read-only {
+			color: #b5b4b4;
+			font-weight: bold;
+			background-color: #58585a;
+		}
+
+		.otherbtnContainer2 {
+			width: 100%;
+			margin-top: -35px;
+		}
+
+		.otherbtnContainer2 .subbox {
+			padding: 15px 0;
+		}
+
+		.btn.otherbtn {
+			width: 27%;
+			background: linear-gradient(to bottom, #98be51, #496b0a);
+			display: inline-block;
+			margin: 0 0 0 10px;
+		}
+
+		.btn.otherbtn:first-child {
+			margin-left: 0;
+		}
+
+		.btn.otherbtn:first-child {
+			width: 32%;
+			min-width: 132px;
+		}
+
+		.btn.otherbtn:last-child {
+			width: 20%;
+			min-width: 100px;
+		}
+
+		.otherbtnContainer {
+			justify-content: center;
+			display: flex;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="max-width">
+		<div class="submax-width">
+			<div class="scontainer">
+				<div class="title">
+					Incubator
+				</div>
+			</div>
+			<div class="contact-form">
+				<div class="box otherbtnContainer2">
+					<div class="subbox ">
+						<div class="title">
+							Status
+						</div>
+						<div class="time1 ">
+							<div class="col2">
+								<label>GSM Is On:</label>
+							</div>
+							<div class="col1">
+								<input type="text" placeholder="Not Known" maxlength="30" id="gsm_is_connected"
+									name="gsm_is_connected" pattern="[^#]+" title="Must be a number" readonly>
+							</div>
+						</div>
+						<div class="time1 ">
+							<div class="col2">
+								<label>Incubator Is On:</label>
+							</div>
+							<div class="col1">
+								<input type="text" placeholder="Not Known" maxlength="30" id="incubator_is_connected"
+									name="incubator_is_connected" pattern="[^#]+" title="Must be a number" readonly>
+							</div>
+						</div>
+						<div class="time1 ">
+							<div class="col2">
+								<label>T</label>
+							</div>
+							<div class="col1">
+								<input type="text" placeholder="Temperature" maxlength="30" id="t" name="t"
+									pattern="[^#]+" title="Must be a number" readonly>
+							</div>
+						</div>
+						<div class="time1 ">
+							<div class="col2">
+								<label>H</label>
+							</div>
+							<div class="col1">
+								<input type="text" placeholder="Humidity" maxlength="30" id="h" name="h" pattern="[^#]+"
+									title="Must be a number" readonly>
+							</div>
+						</div>
+						<div class="time1 ">
+							<div class="col2">
+								<label>Co2</label>
+							</div>
+							<div class="col1">
+								<input type="text" placeholder="Co2" maxlength="30" id="co2" name="co2" pattern="[^#]+"
+									title="Must be a number" readonly>
+							</div>
+						</div>
+
+
+
+
+					</div>
+				</div>
+				<form action="http://ssspark.ir/config?" method="get">
+					<div class="box endBox">
+						<div class="mainSubbox ">
+							<div class="subbox GroupSocket1">
+								<div class="title">
+									Temperature
+								</div>
+								<div class="time1 ">
+									<div class="col2">
+										<label>Tmin</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Minimum Temperature" maxlength="30" id="tmin"
+											name="tmin" pattern="[^#]+" title="Must be a number">
+									</div>
+								</div>
+								<div class="time1 ">
+									<div class="col2">
+										<label>Tmax</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Maximum Temperature" maxlength="30" id="tmax"
+											name="tmax" pattern="[^#]+" title="Must be a number">
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<div class="mainSubbox ">
+							<div class="subbox GroupSocket1">
+								<div class="title">
+									Co2
+								</div>
+								<div class="time1 ">
+									<div class="col2">
+										<label>Co2 min</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Minimum CO2" maxlength="30" id="co2min"
+											name="co2min" pattern="[^#]+" title="Must be a number">
+									</div>
+								</div>
+								<div class="time1 ">
+									<div class="col2">
+										<label>Co2 max</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Maximum Co2" maxlength="30" id="co2max"
+											name="co2max" pattern="[^#]+" title="Must be a number">
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<div class="mainSubbox ">
+							<div class="subbox GroupSocket1">
+								<div class="title">
+									Humidity
+								</div>
+								<div class="time1 ">
+									<div class="col2">
+										<label>Hmin</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Minimum Humidity" maxlength="30" id="hmin"
+											name="hmin" pattern="[^#]+" title="Must be a number">
+									</div>
+								</div>
+
+								<div class="time1 ">
+									<div class="col2">
+										<label>Hmax</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Maximum Humidity" maxlength="30" id="hmax"
+											name="hmax" pattern="[^#]+" title="Must be a number">
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+
+						<div class="subContainer">
+							<div class="subbox GroupSocket1">
+								<div class="time1 ">
+									<div class="col2">
+										<label>Phone Number 1</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Enter your Phone Number 1" maxlength="30"
+											id="pname1" name="pname1" pattern="[^#]+"
+											title="The field can not contain # character ">
+									</div>
+								</div>
+							</div>
+							<div class="subbox GroupSocket2">
+								<div class="time1 ">
+									<div class="col2">
+										<label>Phone Number 2</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Enter your Phone Number 2" maxlength="30"
+											id="pname2" name="pname2" pattern="[^#]+"
+											title="The field can not contain # character ">
+									</div>
+								</div>
+							</div>
+							<div class="subbox GroupSocket3">
+								<div class="time1 ">
+									<div class="col2">
+										<label>Phone Number 3</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Enter your Phone Number 3" maxlength="30"
+											id="pname3" name="pname3" pattern="[^#]+"
+											title="The field can not contain # character ">
+									</div>
+								</div>
+							</div>
+							<div class="subbox GroupSocket4">
+								<div class="time1 ">
+									<div class="col2">
+										<label>Phone Number 4</label>
+									</div>
+									<div class="col1">
+										<input type="text" placeholder="Enter your Phone Number 4" maxlength="30"
+											id="pname4" name="pname4" pattern="[^#]+"
+											title="The field can not contain # character ">
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="otherbtnContainer">
+							<button type="submit" class="btn">Save</button>
+							<!--
+								<button type="button" class="btn btnreset" onclick=" resetFactory();">Reset To
+								Factory</button>
+							-->
+						</div>
+					</div>
+				</form>
+
+				<div class="box otherbtnContainer2">
+					<div class="subbox ">
+						<div class="otherbtnContainer">
+							<button type="button" class="btn otherbtn" onclick=" reset_board();">Reset</button>
+							<button type="button" class="btn otherbtn" onclick=" shutdown_board();">Shutdown</button>
+							<button type="button" class="btn otherbtn" onclick=" update_firmware();">Update</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="0" id="countSocket" name="countSocket" class="dis-none">
+	<div class="results">
+		<div class="sendtext"></div>
+	</div>
+
+	<script>
+		function reset_board() {
+			var jsonData = {
+				"ver": "1.0",
+				"method": "reset_factory",
+				"id": ""
+			};
+			jsonData.id = Math.floor(Math.random() * (10000));
+			// const results = document.querySelector('.results .sendtext');
+			// results.innerText = JSON.stringify(jsonData);
+			// for send to server
+			var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance 
+			var theUrl = "/reset_board";
+			xmlhttp.open("POST", theUrl);
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify(jsonData));
+		}
+		function shutdown_board() {
+			var jsonData = {
+				"ver": "1.0",
+				"method": "shutdown_board",
+				"id": ""
+			};
+			jsonData.id = Math.floor(Math.random() * (10000));
+			// const results = document.querySelector('.results .sendtext');
+			// results.innerText = JSON.stringify(jsonData);
+			// for send to server
+			var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance 
+			var theUrl = "/shutdown_board";
+			xmlhttp.open("POST", theUrl);
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify(jsonData));
+		}
+		function update_firmware() {
+			var jsonData = {
+				"ver": "1.0",
+				"method": "update_firmware",
+				"id": ""
+			};
+			jsonData.id = Math.floor(Math.random() * (10000));
+			// const results = document.querySelector('.results .sendtext');
+			// results.innerText = JSON.stringify(jsonData);
+			// for send to server
+			var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance 
+			var theUrl = "/update_firmware";
+			xmlhttp.open("POST", theUrl);
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify(jsonData));
+		}
+		function load() {
+			console.log("salam")
+			var xmlhttp = new XMLHttpRequest();
+			var theUrl = "/get_config";
+			var jsonData = {
+				"ver": 1.0,
+				"method": "get_config",
+				"id": "241"
+			};
+			xmlhttp.open("POST", theUrl);
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify(jsonData));
+			xmlhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log(this.responseText)
+					jsonData = JSON.parse(this.responseText);
+					//document.getElementById("demo").innerHTML = jsonData;
+					initialise(jsonData);
+				}
+			};
+			var xmlhttp = new XMLHttpRequest();
+			var theUrl = "/get_status";
+			var jsonData = {
+				"ver": 1.0,
+				"method": "get_status",
+				"id": "241"
+			};
+			xmlhttp.open("POST", theUrl);
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify(jsonData));
+			xmlhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log(this.responseText)
+					jsonData = JSON.parse(this.responseText);
+					//document.getElementById("demo").innerHTML = jsonData;
+					initialise_status(jsonData);
+				}
+			};
+
+			//initialise();
+		};
+
+		function initialise(jsonData) {
+			/*
+			var jsonData = {
+				"ver": "1.0",
+				"status": "200",
+				"result": {
+					"Tmin": "10.0",
+					"Tmax": "40.0",
+					"Co2min": "80.0",
+					"Co2max": "100.0",
+					"Hmin": "70.0",
+					"Hmax": "90.0",
+					"PNumber1": "09196152542",
+					"PNumber2": "09196152542",
+					"PNumber3": "09196152542",
+					"PNumber4": ""
+				}
+			};
+			*/
+			document.getElementById("tmin").value = jsonData.params.Tmin;
+			document.getElementById("tmax").value = jsonData.params.Tmax;
+			document.getElementById("co2min").value = jsonData.params.Co2min;
+			document.getElementById("co2max").value = jsonData.params.Co2max;
+			document.getElementById("hmin").value = jsonData.params.Hmin;
+			document.getElementById("hmax").value = jsonData.params.Hmax;
+
+			l = jsonData.params.phone_numbers.length
+			for (let i = 0; i < l; i++) {
+				document.getElementById("pname" + (i + 1)).value = jsonData.params.phone_numbers[i];
+			}
+			/*
+			document.getElementById("pname1").value = jsonData.params.PNumber1;
+			document.getElementById("pname2").value = jsonData.params.PNumber2;
+			document.getElementById("pname3").value = jsonData.params.PNumber3;
+			document.getElementById("pname4").value = jsonData.params.PNumber4;
+			*/
+
+		};
+
+		function initialise_status(jsonData) {
+			document.getElementById("t").value = jsonData.params.T;
+			document.getElementById("co2").value = jsonData.params.Co2;
+			document.getElementById("h").value = jsonData.params.H;
+			document.getElementById("gsm_is_connected").value = jsonData.params.gsm_is_connected;
+			document.getElementById("incubator_is_connected").value = jsonData.params.incubator_is_connected;
+
+
+		}
+		document.onload = load(); //initialise();
+
+		function handleFormSubmit(event) {
+			console.log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+			event.preventDefault();
+			const data = new FormData(event.target);
+			const formJSON = Object.fromEntries(data.entries());
+
+			var jsonData = {
+				"ver": "1.0",
+				"params": {
+					"Tmin": "10.0",
+					"Tmax": "40.0",
+					"Co2min": "80.0",
+					"Co2max": "100.0",
+					"Hmin": "70.0",
+					"Hmax": "90.0",
+					"phone_numbers": ["", "", "", ""]
+				}
+			};
+			jsonData.params.Tmin = document.getElementById("tmin").value;
+			jsonData.params.Tmax = document.getElementById("tmax").value;
+			jsonData.params.Co2min = document.getElementById("co2min").value;
+			jsonData.params.Co2max = document.getElementById("co2max").value;
+			jsonData.params.Hmin = document.getElementById("hmin").value;
+			jsonData.params.Hmax = document.getElementById("hmax").value;
+
+			var phone_numbers = [];
+			for (let i = 1; i <= 4; i++) {
+				t = 'pname' + i;
+				str = document.getElementById(t).value;
+				if (str != "") {
+					phone_numbers.push(str);
+				}
+			}
+			jsonData.params.phone_numbers = phone_numbers;
+			/*
+			jsonData.params.PNumber1 = document.getElementById("pname1").value;
+			jsonData.params.PNumber2 = document.getElementById("pname2").value;
+			jsonData.params.PNumber3 = document.getElementById("pname3").value;
+			jsonData.params.PNumber4 = document.getElementById("pname4").value;
+			*/
+			jsonData.id = Math.floor(Math.random() * (10000));
+			// const results = document.querySelector('.results .sendtext');
+			// results.innerText = JSON.stringify(jsonData);
+
+			//  for send to server
+			var xmlhttp = new XMLHttpRequest(); // new HttpRequest instance 
+			var theUrl = "/change_information";
+			xmlhttp.open("POST", theUrl);
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify(jsonData));
+			alert('command sent!');
+		}
+		const form = document.querySelector('.contact-form');
+		form.addEventListener('submit', handleFormSubmit);
+	</script>
+
+
+
+</body>
+
+</html>
