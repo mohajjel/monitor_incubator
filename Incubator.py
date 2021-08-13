@@ -1,27 +1,6 @@
 import serial
 import time
 import os
-def get_Incubator_port(n=3):
-    for i in range(0, n):
-        path = "/dev/ttyUSB{}".format(i)
-        #print(path)
-        if os.path.exists(path):
-            serialPort = serial.Serial(port=path, baudrate=2400, timeout=2)
-            serialPort.write(b"IN PV 01\r\n")
-            time.sleep(1)
-            if serialPort.in_waiting > 0:
-                serialString = serialPort.read_all()
-                str = serialString.decode("Ascii")
-                serialPort.close()
-                #print(str)
-                if str.find("OK") != -1:
-                    return path
-            else:
-                serialPort.close()
-
-    return None
-
-
 class Incubator:
     def __init__(self, port, timeout=1.0):
         self.timeout = timeout

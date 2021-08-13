@@ -11,7 +11,7 @@ class myGSM:
             print("GSM modem not connected!")
             raise Exception("GSM modem not connected!")
         self.gsm = sim800(baudrate=2400, path=self.path_gsm)
-        self.gsm.sms = mysms.mysms(baudrate=self.gsm._baudrate,path=self.gsm._path)
+        #self.gsm.sms = mysms.mysms(baudrate=self.gsm._baudrate,path=self.gsm._path)
         self.gsm.requests.APN = apn
         self.phone_numbers = phone_numbers
         

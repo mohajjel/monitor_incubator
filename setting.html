@@ -612,6 +612,42 @@
 						</div>
 						<div class="time1 ">
 							<div class="col2">
+								<label>UPS Is On:</label>
+							</div>
+							<div class="col1">
+								<input type="text" placeholder="Not Known" maxlength="30" id="ups_is_connected"
+									name="ups_is_connected" pattern="[^#]+" title="Must be a number" readonly>
+							</div>
+						</div>
+						<div class="time1 ">
+							<div class="col2">
+								<label>Power is Plugged</label>
+							</div>
+							<div class="col1">
+								<input type="text" placeholder="Not Known" maxlength="30" id="power_is_plugged"
+									name="power_is_plugged" pattern="[^#]+" title="Must be a number" readonly>
+							</div>
+						</div>
+						<div class="time1 ">
+							<div class="col2">
+								<label>Battery Capacity</label>
+							</div>
+							<div class="col1">
+								<input type="text" placeholder="Not Known" maxlength="30" id="battrey_capacity"
+									name="battrey_capacity" pattern="[^#]+" title="Must be a number" readonly>
+							</div>
+						</div>
+						<div class="time1 ">
+							<div class="col2">
+								<label>Vout (mv)</label>
+							</div>
+							<div class="col1">
+								<input type="text" placeholder="Not Known" maxlength="30" id="vout"
+									name="vout" pattern="[^#]+" title="Must be a number" readonly>
+							</div>
+						</div>
+						<div class="time1 ">
+							<div class="col2">
 								<label>T</label>
 							</div>
 							<div class="col1">
@@ -791,8 +827,11 @@
 					<div class="subbox ">
 						<div class="otherbtnContainer">
 							<button type="button" class="btn otherbtn" onclick=" reset_board();">Reset</button>
+							<!--
 							<button type="button" class="btn otherbtn" onclick=" shutdown_board();">Shutdown</button>
+							
 							<button type="button" class="btn otherbtn" onclick=" update_firmware();">Update</button>
+							-->
 						</div>
 					</div>
 				</div>
@@ -941,8 +980,10 @@
 			document.getElementById("h").value = jsonData.params.H;
 			document.getElementById("gsm_is_connected").value = jsonData.params.gsm_is_connected;
 			document.getElementById("incubator_is_connected").value = jsonData.params.incubator_is_connected;
-
-
+			document.getElementById("ups_is_connected").value = jsonData.params.ups_is_connected;
+			document.getElementById("battrey_capacity").value = jsonData.params.battrey_capacity;
+			document.getElementById("vout").value = jsonData.params.vout;
+			document.getElementById("power_is_plugged").value = jsonData.params.power_is_plugged;
 		}
 		document.onload = load(); //initialise();
 

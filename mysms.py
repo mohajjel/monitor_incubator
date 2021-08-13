@@ -29,16 +29,24 @@ class mysms(communicate):
         return stats
 
     def readAll(self,index=None):
+        print("OOOOOOOOOOOOOOOOOOOOOO")
+        self._send_cmd('AT+CPMS="ME","ME","ME"',read=False)
         cmd = "AT"
         self._send_cmd(cmd)
         cmd = "AT+CMGF=1"
         # Sets the GSM Module in Text Mode
         self._send_cmd(cmd)
-        cmd = 'AT+CMGL="ALL"'
-        # Sets the GSM Module in Text Mode
-        self._send_cmd(cmd,read=False)
+        
+        cmd = 'AT+CMGL=\"ALL\"' # 'AT+CMGL="ALL"'
+        print(cmd)
+        self._send_cmd(cmd,t=2)
         data = self._readtill("OK")
         print(data)
+        
+        cmd='AT+CMGDA=\"DEL ALL\"'
+        print(cmd)
+        print(self._send_cmd(cmd))
+        return data
     def newMessageIndex(self, mode):
         self._send_cmd("+CMGF=1")
         h = self._send_cmd("+CMGL=\"REC UNREAD\",1", t=3)
