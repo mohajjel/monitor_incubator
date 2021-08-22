@@ -27,6 +27,12 @@ class myGSM:
                 break
             time.sleep(10)
 
+    def dial_all_numbers(self):
+        for i in range(len(self.phone_numbers)):
+            self.gsm._send_cmd("ATD"+self.phone_numbers[i]+";")
+            time.sleep(10)
+            self.gsm._send_cmd("ATH")
+        
 
 '''
         message = "Hello"

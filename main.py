@@ -93,7 +93,7 @@ def monitor():
     mgsm = None
     configs = config.read_config(PATH + CONFIG_FILE_NAME)
     phone_numbers = configs["params"]["phone_numbers"]
-    apn = "mcinet"  # configs["params"]["apn"] #
+    apn = "mcinet"  # "mtnirancell"#  # configs["params"]["apn"] #
 
     Tmin = float(configs["params"]["Tmin"])
     Tmax = float(configs["params"]["Tmax"])
@@ -139,13 +139,34 @@ def monitor():
         status.set("ups_is_connected", True)
         print("UPS port is {}".format(ups_port_idx))
         my_ups = ups.UPS2("/dev/ttyUSB{}".format(ups_port_idx))
-       
+
     if ups_port_idx != None and gsm_port_idx != None and incubator_port_idx != None:
         print("All thinges ok send sms:")
-        mgsm.send_message_for_all("Hello System is OK!")
+        mgsm.send_message_for_all("Hello System is On!")
         n_NoResponse = 0
         print("monitor loop")
+        T_out_of_range = "T_out_of_range"
+        Co2_out_of_range = "Co2_out_of_range"
+        Co2_capsule_is_not_connected = "Co2_capsule_is_not_connected"
+        H_out_of_range = "H_out_of_range"
+        Power_failure = "Power_failure"
+        Incubatur_not_connected = "Incubatur_not_connected"
+        notifications = {
+            T_out_of_range: False,
+            Co2_out_of_range: False,
+            Co2_capsule_is_not_connected: False,
+            H_out_of_range: False,
+            Power_failure: False,
+            Incubatur_not_connected: False,
+        }
+        flag_send_warning_T = True
+        flag_send_warning_H = True
+        flag_send_warning_CO2 = True
+        flag_send_warning_Power = True
+        flag_send_warning_Incubator = True
+        reconnect_to_incubator = False;
         while True:
+
             configs = config.read_config(PATH + CONFIG_FILE_NAME)
             phone_numbers = configs["params"]["phone_numbers"]
             apn = "mcinet"  # configs["params"]["apn"] #
@@ -158,51 +179,69 @@ def monitor():
 
             Hmin = float(configs["params"]["Hmin"])
             Hmax = float(configs["params"]["Hmax"])
-            temperature = incubator.get_Temperature()
-            status.set("T", temperature)
-            if temperature == None:
-                print("ERROR:No Response")
+            
+            try:
+                if reconnect_to_incubator and os.path.exists(f"/dev/ttyUSB{incubator_port_idx}"):
+                    print("reconnect to incubator")
+                    incubator = Incubator.Incubator("/dev/ttyUSB{}".format(incubator_port_idx), 1.0)
+
+                temperature = incubator.get_Temperature()
+                status.set("T", temperature)
+                if temperature == None:
+                    print("ERROR:No Response")
+                    n_NoResponse += 1
+                    status.set("incubator_is_connected", False)
+                else:
+                    n_NoResponse = 0
+                    print("T={}\n".format(temperature))
+                    if flag_send_warning_T and (temperature < Tmin or temperature > Tmax):
+                        mgsm.send_message_for_all(
+                            "Warning: T={} is out of range".format(temperature)
+                        )
+
+                time.sleep(0.1)
+
+                co2 = incubator.get_Co2()
+                status.set("Co2", co2)
+                if co2 == None:
+                    print("ERROR:No Response")
+                    n_NoResponse += 1
+                    status.set("incubator_is_connected", False)
+                else:
+                    n_NoResponse = 0
+                    print("Co2={}\n".format(co2))
+                    if flag_send_warning_CO2 and co2 > 99.8:
+                        mgsm.send_message_for_all(
+                            "Warning: Co2 capsule is not connected".format(co2)
+                        )
+                    if flag_send_warning_CO2 and (co2 < Co2min or co2 > Co2max):
+                        mgsm.send_message_for_all(
+                            "Warning: Co2={} is out of range".format(co2)
+                        )
+
+                time.sleep(0.1)
+
+                humidity = incubator.get_Humidity()
+                status.set("H", humidity)
+                if humidity == None:
+                    print("ERROR:No Response")
+                    n_NoResponse += 1
+                    status.set("incubator_is_connected", False)
+                else:
+                    n_NoResponse = 0
+                    print("H={}\n".format(humidity))
+                    if flag_send_warning_H and (humidity < Hmin or humidity > Hmax):
+                        mgsm.send_message_for_all(
+                            "Warning: H={} is out of range".format(humidity)
+                        )
+            except:
+                print("Incubatur is not connected(2)")
+                reconnect_to_incubator = True
                 n_NoResponse += 1
-                status.set("incubator_is_connected", False)
-            else:
-                print("T={}\n".format(temperature))
-                if temperature < Tmin or temperature > Tmax:
-                    mgsm.send_message_for_all(
-                        "Warning: T={} is out of range".format(temperature)
-                    )
-
-            time.sleep(1.0)
-
-            co2 = incubator.get_Co2()
-            status.set("Co2", co2)
-            if co2 == None:
-                print("ERROR:No Response")
-                n_NoResponse += 1
-                status.set("incubator_is_connected", False)
-            else:
-                print("Co2={}\n".format(co2))
-                if co2 < Co2min or co2 > Co2max:
-                    mgsm.send_message_for_all(
-                        "Warning: Co2={} is out of range".format(co2)
-                    )
-
-            time.sleep(1.0)
-
-            humidity = incubator.get_Humidity()
-            status.set("H", humidity)
-            if humidity == None:
-                print("ERROR:No Response")
-                n_NoResponse += 1
-                status.set("incubator_is_connected", False)
-            else:
-                print("H={}\n".format(humidity))
-                if humidity < Hmin or humidity > Hmax:
-                    mgsm.send_message_for_all(
-                        "Warning: H={} is out of range".format(humidity)
-                    )
-
-            if n_NoResponse == 3:
+              
+            if flag_send_warning_Incubator and n_NoResponse != 0:
                 mgsm.send_message_for_all("ERROR: Incubutor is not connected")
+                mgsm.dial_all_numbers()
                 n_NoResponse = 0
 
             print(my_ups.decode_uart())
@@ -212,18 +251,68 @@ def monitor():
                 status.set("power_is_plugged", True)
             else:
                 status.set("power_is_plugged", False)
+                if flag_send_warning_Power:
+                    mgsm.send_message_for_all("ERROR: power failure!")
+                    mgsm.dial_all_numbers()
             status.set("vout", my_ups.vout)
 
             data = mgsm.gsm.sms.readAll()
-            if data.find("get") != -1:
+            if data.lower().find("get") != -1:
                 mgsm.send_message_for_all(
-                    "T={} Co2={} H={} Power={}".format(
+                    "T={} Co2={} H={} Power is plugged={}".format(
                         status.get("T"),
                         status.get("Co2"),
                         status.get("H"),
                         status.get("power_is_plugged"),
                     )
                 )
+            elif data.lower().find("off all") != -1:
+                flag_send_warning_T = False
+                flag_send_warning_H = False
+                flag_send_warning_CO2 = False
+                flag_send_warning_Power = False
+                flag_send_warning_Incubator = False
+
+                print("warning all off")
+
+            elif data.lower().find("off t") != -1:
+                flag_send_warning_T = False
+                print("warning T off")
+            elif data.lower().find("off h") != -1:
+                flag_send_warning_H = False
+                print("warning H off")
+            elif data.lower().find("off co2") != -1:
+                flag_send_warning_CO2 = False
+                print("warning CO2 off")
+            elif data.lower().find("off power") != -1:
+                flag_send_warning_Power = False
+                print("warning power off")
+            elif data.lower().find("off inc") != -1:
+                flag_send_warning_Incubator = False
+                print("warning incubator off")
+
+            elif data.lower().find("on t") != -1:
+                flag_send_warning_T = True
+                print("warning T on")
+            elif data.lower().find("on h") != -1:
+                flag_send_warning_H = True
+                print("warning H on")
+            elif data.lower().find("on co2") != -1:
+                flag_send_warning_CO2 = True
+                print("warning CO2 on")
+            elif data.lower().find("on power") != -1:
+                flag_send_warning_Power = True
+                print("warning power on")
+            elif data.lower().find("on inc") != -1:
+                flag_send_warning_Incubator = True
+                print("warning incubator on")
+            elif data.lower().find("on all") != -1:
+                flag_send_warning_T = True
+                flag_send_warning_H = True
+                flag_send_warning_CO2 = True
+                flag_send_warning_Power = True
+                flag_send_warning_Incubator = True
+                print("warning all on")
 
             # index = mgsm.gsm.sms.newMessageIndex(0)
             # if index > 0:
