@@ -36,6 +36,7 @@ class Logger:
         self.file.flush()
  
 path = '/home/pi/monitor_incubator/log4.txt'
+os.chdir('/home/pi/monitor_incubator')
 sys.stdout = Logger(path)
 print('Hello, World')
 
