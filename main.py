@@ -18,6 +18,26 @@ import ups
 
 hostName = "0.0.0.0"  # "localhost"
 serverPort = 80
+#sys.stdout = open('/home/pi/monitor_incubator/log3.txt', 'w')
+
+class Logger:
+ 
+    def __init__(self, filename):
+        self.console = sys.stdout
+        self.file = open(filename, 'w')
+ 
+    def write(self, message):
+        self.console.write(message)
+        self.file.write(message)
+        self.file.flush()
+ 
+    def flush(self):
+        self.console.flush()
+        self.file.flush()
+ 
+path = '/home/pi/monitor_incubator/log4.txt'
+sys.stdout = Logger(path)
+print('Hello, World')
 
 
 class Status:
@@ -106,7 +126,11 @@ def monitor():
 
     Period = 5.0
     n = [0, 1, 2]
-    gsm_port_idx = portFinder.get_port(b"AT\r\n", b"OK", n=n)
+    stream = os.popen('ls /dev/ttyUSB*')
+    list_ports = stream.read().split('\n')
+    list_ports = list_ports[:-1]
+
+    gsm_port_idx = portFinder.get_port(b"AT\r\n", b"OK", list_ports)
     if gsm_port_idx == None:
         print("GSM not Connected")
         # raise Exception("GSM not Connected")
@@ -114,10 +138,10 @@ def monitor():
         # return -1
     else:
         status.set("gsm_is_connected", True)
-        print("GSM port is {}".format(gsm_port_idx))
-        mgsm = gsm.myGSM("/dev/ttyUSB{}".format(gsm_port_idx), apn, phone_numbers)
-        n.remove(gsm_port_idx)
-    incubator_port_idx = portFinder.get_port(b"IN PV 01\r\n", b"OK", n=n)
+        print("GSM port is {}".format(list_ports[gsm_port_idx]))
+        mgsm = gsm.myGSM(list_ports[gsm_port_idx], apn, phone_numbers)
+        list_ports.pop(gsm_port_idx)
+    incubator_port_idx = portFinder.get_port(b"IN PV 01\r\n", b"OK", list_ports)
     if incubator_port_idx == None:
         # mgsm.send_message_for_all("Error Incubutor is not connected")
         status.set("incubator_is_connected", False)
@@ -126,10 +150,10 @@ def monitor():
         # return -1
     else:
         status.set("incubator_is_connected", True)
-        print("Incubutor port is {}".format(incubator_port_idx))
-        incubator = Incubator.Incubator("/dev/ttyUSB{}".format(incubator_port_idx), 1.0)
-        n.remove(incubator_port_idx)
-    ups_port_idx = portFinder.get_port(b"", b"SmartUPS", baudrate=9600, n=n)
+        print("Incubutor port is {}".format(list_ports[incubator_port_idx]))
+        incubator = Incubator.Incubator(list_ports[incubator_port_idx], 1.0)
+        list_ports.pop(incubator_port_idx)
+    ups_port_idx = portFinder.get_port(b"", b"SmartUPS",list_ports, baudrate=9600)
     if ups_port_idx == None:
         status.set("ups_is_connected", False)
         print("UPS not Connected")
@@ -137,10 +161,10 @@ def monitor():
         # return -1
     else:
         status.set("ups_is_connected", True)
-        print("UPS port is {}".format(ups_port_idx))
-        my_ups = ups.UPS2("/dev/ttyUSB{}".format(ups_port_idx))
+        print("UPS port is {}".format(list_ports[ups_port_idx]))
+        my_ups = ups.UPS2(list_ports[ups_port_idx])
 
-    if ups_port_idx != None and gsm_port_idx != None and incubator_port_idx != None:
+    if ups_port_idx != None and gsm_port_idx != None: #and incubator_port_idx != None:
         print("All thinges ok send sms:")
         mgsm.send_message_for_all("Hello System is On!")
         n_NoResponse = 0
@@ -181,9 +205,26 @@ def monitor():
             Hmax = float(configs["params"]["Hmax"])
             
             try:
-                if reconnect_to_incubator and os.path.exists(f"/dev/ttyUSB{incubator_port_idx}"):
-                    print("reconnect to incubator")
-                    incubator = Incubator.Incubator("/dev/ttyUSB{}".format(incubator_port_idx), 1.0)
+                #print('*******************')
+                #print(os.path.exists(f"/dev/ttyUSB{incubator_port_idx}"))
+                if reconnect_to_incubator:
+                    print("try to reconnect to incubator...")
+                    stream = os.popen('ls /dev/ttyUSB*')
+                    list_ports = stream.read().split('\n')
+                    list_ports = list_ports[:-1]
+                    list_ports.remove(mgsm.path_gsm)
+                    list_ports.remove(my_ups.port)
+                    incubator_port_idx = portFinder.get_port(b"IN PV 01\r\n", b"OK", list_ports)
+                    if incubator_port_idx!=None:
+                        status.set("incubator_is_connected", True)
+                        print("Incubutor port is {}".format(list_ports[incubator_port_idx]))
+                        incubator = Incubator.Incubator(list_ports[incubator_port_idx], 1.0)
+                        reconnect_to_incubator = False
+                        print("Ok")
+                    else:
+                        print("Failed")
+                        raise Exception("Incubator not connected!(3)")
+                    
 
                 temperature = incubator.get_Temperature()
                 status.set("T", temperature)
@@ -193,6 +234,7 @@ def monitor():
                     status.set("incubator_is_connected", False)
                 else:
                     n_NoResponse = 0
+                    status.set("incubator_is_connected", True)
                     print("T={}\n".format(temperature))
                     if flag_send_warning_T and (temperature < Tmin or temperature > Tmax):
                         mgsm.send_message_for_all(
@@ -209,6 +251,7 @@ def monitor():
                     status.set("incubator_is_connected", False)
                 else:
                     n_NoResponse = 0
+                    status.set("incubator_is_connected", True)
                     print("Co2={}\n".format(co2))
                     if flag_send_warning_CO2 and co2 > 99.8:
                         mgsm.send_message_for_all(
@@ -229,6 +272,7 @@ def monitor():
                     status.set("incubator_is_connected", False)
                 else:
                     n_NoResponse = 0
+                    status.set("incubator_is_connected", True)
                     print("H={}\n".format(humidity))
                     if flag_send_warning_H and (humidity < Hmin or humidity > Hmax):
                         mgsm.send_message_for_all(
@@ -330,11 +374,21 @@ class MyServer(BaseHTTPRequestHandler):
         print(self.path)
 
         self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        with open(PATH + "setting.html") as f:
-            lines = f.read()
-            self.wfile.write(bytes(lines, encoding="utf8"))
+
+        if self.path == "/log":
+            self.send_header("Content-type", "text/plain")
+            self.end_headers()           
+            with open(PATH + "log4.txt") as f:
+                lines = f.read()
+                self.wfile.write(bytes(lines, encoding="utf8"))
+                f.close()            
+        else:
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            with open(PATH + "setting.html") as f:
+                lines = f.read()
+                self.wfile.write(bytes(lines, encoding="utf8"))
+                f.close()
 
     def do_POST(self):
         self.send_response(200)

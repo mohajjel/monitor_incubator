@@ -4,7 +4,8 @@ import os
 import re
 class UPS2:
     def __init__(self,port):
-        print("********", port)
+        #print("********", port)
+        self.port = port
         self.ser  = serial.Serial(port,9600, timeout=4)        
         
     def get_data(self,nums):

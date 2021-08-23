@@ -2,9 +2,10 @@ import serial
 import time
 import os
 
-def get_port(req, resp, prefix="/dev/ttyUSB",n=[0,1,2], baudrate=2400):
-    for i in n:
-        path = prefix + "{}".format(i)
+def get_port(req, resp, list_ports, baudrate=2400):
+    for i in range(len(list_ports)):
+        #path = prefix + "{}".format(i)
+        path = list_ports[i];
         #print(path)
         if os.path.exists(path):
             serialPort = serial.Serial(port=path, baudrate=baudrate, timeout=2)
