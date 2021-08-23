@@ -446,6 +446,11 @@ class MyServer(BaseHTTPRequestHandler):
         elif self.path == "/shutdown_board":
             subprocess.call(["shutdown", "now"])
         elif self.path == "/update_firmware":
+            stream = os.popen('git pull')
+            output = stream.read()
+            #if output.find('Already up to date')!=-1
+            if output.find('Updating')!=-1:
+                subprocess.call(["reboot", "now"])
             """
             cmd = subprocess.Popen(['git', 'pull'], stdout=subprocess.PIPE)
             cmd_out, cmd_err = cmd.communicate()
