@@ -39,6 +39,7 @@ path = '/home/pi/monitor_incubator/log4.txt'
 sys.stdout = Logger(path)
 print('Hello, World')
 
+lock = threading.Lock()
 
 class Status:
     gsm_is_connected = False
@@ -225,6 +226,7 @@ def monitor():
                         print("Failed")
                         raise Exception("Incubator not connected!(3)")
                     
+                lock.acquire()
 
                 temperature = incubator.get_Temperature()
                 status.set("T", temperature)
@@ -278,11 +280,12 @@ def monitor():
                         mgsm.send_message_for_all(
                             "Warning: H={} is out of range".format(humidity)
                         )
+                lock.release()
             except:
                 print("Incubatur is not connected(2)")
                 reconnect_to_incubator = True
                 n_NoResponse += 1
-              
+            lock.acquire()
             if flag_send_warning_Incubator and n_NoResponse != 0:
                 mgsm.send_message_for_all("ERROR: Incubutor is not connected")
                 mgsm.dial_all_numbers()
@@ -361,7 +364,7 @@ def monitor():
             # index = mgsm.gsm.sms.newMessageIndex(0)
             # if index > 0:
             #    strr = mgsm.gsm.sms.readSMS(index)
-
+            lock.release()
             time.sleep(Period)
 
     else:
@@ -442,7 +445,9 @@ class MyServer(BaseHTTPRequestHandler):
             config.write_config(PATH + CONFIG_FILE_NAME, message)
             print(json.dumps(message))
         elif self.path == "/reset_board":
+            lock.acquire()
             subprocess.call(["reboot", "now"])
+            #lock.release()
         elif self.path == "/shutdown_board":
             subprocess.call(["shutdown", "now"])
         elif self.path == "/update_firmware":
@@ -450,7 +455,14 @@ class MyServer(BaseHTTPRequestHandler):
             output = stream.read()
             #if output.find('Already up to date')!=-1
             if output.find('Updating')!=-1:
+                lock.acquire()
+                print("restart")
+                time.sleep(1)
                 subprocess.call(["reboot", "now"])
+            elif output.find('Already up to date')!=-1:
+                print("Already up to date")
+            else:
+                print("update failed")
             """
             cmd = subprocess.Popen(['git', 'pull'], stdout=subprocess.PIPE)
             cmd_out, cmd_err = cmd.communicate()
